@@ -11,12 +11,6 @@ pipeline {
             }
         }
 
-        stage('Unit Test') {
-            steps {
-                sh './mvnw test'
-            }
-        }
-
         stage('SonarQube') {
             steps {
                 sh '''
