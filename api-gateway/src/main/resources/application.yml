@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+
+        - id: employee-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/employees/**
+
+        - id: attendance-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/attendance/**
