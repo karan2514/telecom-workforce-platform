@@ -1,37 +1,28 @@
-pipeline {
+agent any
 
-    agent any
+stages {
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git 'https://gitlab.com/telecom/project.git'
-            }
+    stage('Build') {
+        steps {
+            sh 'chmod +x mvnw'
+            sh './mvnw clean install'
         }
+    }
 
-        stage('Build') {
-            steps {
-                sh 'mvn clean install'
-            }
+    stage('Unit Test') {
+        steps {
+            sh './mvnw test'
         }
+    }
 
-        stage('Unit Test') {
-            steps {
-                sh 'mvn test'
-            }
+    stage('SonarQube') {
+        steps {
+            sh '''
+            ./mvnw sonar:sonar \
+            -Dsonar.projectKey=telecom-workforce-platform \
+            -Dsonar.host.url=http://host.docker.internal:9000 \
+            -Dsonar.login=sqa_e92aa93db4c1ca712261a2626ad596271a6767d1
+            '''
         }
-
-        stage('SonarQube') {
-            steps {
-                sh 'mvn sonar:sonar'
-            }
-        }
-
-        stage('Docker Build') {
-            steps {
-                sh 'docker build -t telecom-app .'
-            }
-        }
-
     }
 }
