@@ -21,6 +21,7 @@
 		<module>notification-service</module>
 		<module>allocation-service</module>
 		<module>scheduler-service</module>
+		<module>weblogic-jms-demo</module>
 	</modules>
 
 
